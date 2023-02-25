@@ -2,7 +2,6 @@
 
 class CPIOFile{
 	set_header(h){
-		//read header
 		h=header_re.exec(h)
 		if(!h)throw Error('bad header')
 		this.c_ino=      parseInt(h[1],16)
@@ -17,7 +16,6 @@ class CPIOFile{
 		this.c_rdevmajor=parseInt(h[10],16)
 		this.c_rdevminor=parseInt(h[11],16)
 		this.c_namesize= parseInt(h[12],16)
-		//read name
 		if(!this.c_namesize)throw Error('c_namesize = 0')
 	}
 	set_name(name){
@@ -167,8 +165,8 @@ format_table=(row_item_count,spacing,items)=>{
 	return out
 },
 dump_re=RegExp('^\\.|[^-.0-9A-Z_a-z]','g'),
-esc_regexp=RegExp('[^!"$&-~]','g'),esc_replacer=c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0'),
-unesc_regexp=RegExp('%([0-9A-Fa-f]{0,2})','g'),unesc_replacer=(_,h)=>{
+esc_re=RegExp('[^!"$&-~]','g'),esc_replacer=c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0'),
+unesc_re=RegExp('%([0-9A-Fa-f]{0,2})','g'),unesc_replacer=(_,h)=>{
 	if(h.length!==2)throw Error('invalid uri escape')
 	return String.fromCharCode(parseInt(h,16))
 },
@@ -189,7 +187,7 @@ parse_table=table=>{
 			line=line.split(spaces_re)
 			if(line.length!==12)throw Error(`table: invalid number of words in line (expected 12, got ${line.length})`)
 			const f=table[i++]=new CPIOFile()
-			f.name=encodeURIComponent(line[0]).replace(unesc_regexp,unesc_replacer).replace(unesc_regexp,unesc_replacer)
+			f.name=encodeURIComponent(line[0]).replace(unesc_re,unesc_replacer).replace(unesc_re,unesc_replacer)
 			f.dump_name=decodeURIComponent(line[1])
 			f.c_ino=parse_int_hex8(line[2])
 			f.c_mode=parse_int_hex8(line[3])
@@ -244,7 +242,7 @@ if(Deno.args.length===3){
 			while(i<len){
 				const f=files[i++]
 				table.push(
-					f.name.replace(esc_regexp,esc_replacer),//NAME
+					f.name.replace(esc_re,esc_replacer),//NAME
 					f.dump_name,//DUMP_NAME
 					f.c_ino.toString(10),//INO
 					'0o'+f.c_mode.toString(8).padStart(6,'0'),//MODE
