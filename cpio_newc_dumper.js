@@ -44,6 +44,7 @@ class CPIOReader{
 				return String.fromCharCode.apply(null,chunk.subarray(0,size))
 			}
 			this.overread=null
+			size-=chunk.length
 			out=String.fromCharCode.apply(null,chunk)
 		}
 		while(size){
