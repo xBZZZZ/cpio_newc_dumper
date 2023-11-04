@@ -259,7 +259,7 @@ if(Deno.args.length===3){
 			}
 			Deno.writeTextFileSync('table.txt',`\
 #empty or starting with "#" lines are ingored
-#DUMP_NAME is dumped file's name in location of myself ("table" file)
+#DUMP_NAME is dumped file's name in location of myself ("table.txt" file)
 #NAME and DUMP_NAME are uri escaped (%XX hex escape)
 #DUMP_NAME is "." means empty file
 #see https://manpages.ubuntu.com/manpages/jammy/en/man5/cpio.5.html
