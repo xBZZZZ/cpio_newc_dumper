@@ -258,11 +258,11 @@ if(Deno.args.length===3){
 				)
 			}
 			Deno.writeTextFileSync('table.txt',`\
-#empty or starting with "#" lines are ingored
+#empty or starting with "#" lines are ignored
 #DUMP_NAME is dumped file's name in location of myself ("table.txt" file)
 #NAME and DUMP_NAME are uri escaped (%XX hex escape)
 #DUMP_NAME is "." means empty file
-#see https://manpages.ubuntu.com/manpages/jammy/en/man5/cpio.5.html
+#see https://manpages.ubuntu.com/manpages/noble/en/man5/cpio.5.html
 
 ${format_table(12,2,table)}`)
 			Deno.exit(0)
