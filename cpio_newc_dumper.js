@@ -217,7 +217,7 @@ file_for_writing=name=>name==='-'?Deno.stout:Deno.openSync(name,open_w)
 
 if(Deno.args.length===3){
 	let gz=false
-	switch(Deno.args[0]){
+	switch(Deno.args[0].toLowerCase()){
 		case 'dumpgz':
 			gz=true
 		case 'dump':{
