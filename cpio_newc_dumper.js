@@ -21,7 +21,12 @@ class CPIOFile{
 	set_name(name){
 		if(this.c_namesize-1!==name.indexOf('\0'))throw Error('bad name')
 		this.name=name=name.slice(0,-1)
-		this.dump_name=this.c_filesize?`${name.slice(name.lastIndexOf('/')+1).replace(dump_re,'')}.${this.c_ino}.${this.c_rdevmajor}.${this.c_rdevminor}.df`:'.'
+		if(this.c_filesize){
+			const n=`${name.slice(name.lastIndexOf('/')+1).replace(dump_re,'')}.${this.c_ino}.${this.c_rdevmajor}.${this.c_rdevminor}.df`
+			let i=0
+			while(n.charAt(i)==='.')++i
+			this.dump_name=n.slice(i)
+		}else this.dump_name='.'
 	}
 	unique_bigint(){
 		let x=BigInt(this.c_ino)
@@ -165,7 +170,7 @@ format_table=(row_item_count,spacing,items)=>{
 	}
 	return out
 },
-dump_re=RegExp('^\\.|[^-.0-9A-Z_a-z]','g'),
+dump_re=RegExp('[^-.0-9A-Z_a-z]','g'),
 esc_re=RegExp('[^!"$&-~]','g'),esc_replacer=c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0'),
 unesc_re=RegExp('%([0-9A-Fa-f]{0,2})','g'),unesc_replacer=(_,h)=>{
 	if(h.length!==2)throw Error('invalid uri escape')
