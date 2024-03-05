@@ -51,4 +51,7 @@ DUMP_DIR contains non-empty files (symlinks is dumped as files with link target 
 I am not a cpio extractor that keeps file names and directory structure!
 I am a tool to dump and pack newc cpio ("file" calls it "ASCII cpio archive (SVR4 with no CRC)") archives.
 See https://manpages.ubuntu.com/manpages/jammy/en/man5/cpio.5.html "New ASCII Format".
+
+some ARCHIVE and DUMP_DIR names won't work, example (bash):
+  deno run --allow-read --allow-write cpio_newc_dumper.js dump $'\xee.cpio' asd
 ```
